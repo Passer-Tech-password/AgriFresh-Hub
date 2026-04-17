@@ -13,7 +13,15 @@ const firebaseConfig = {
 };
 
 // Handle potential undefined values during development reloads or server-side pre-rendering
-const isConfigValid = !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "your_api_key";
+// We check if the keys are actually set and not just placeholders or "undefined" strings
+const isConfigValid = 
+  !!firebaseConfig.apiKey && 
+  firebaseConfig.apiKey !== "your_api_key" && 
+  firebaseConfig.apiKey !== "undefined" &&
+  !!firebaseConfig.projectId &&
+  firebaseConfig.projectId !== "your_project_id" &&
+  firebaseConfig.projectId !== "undefined";
+
 const app = getApps().length 
   ? getApp() 
   : (isConfigValid ? initializeApp(firebaseConfig) : null);
