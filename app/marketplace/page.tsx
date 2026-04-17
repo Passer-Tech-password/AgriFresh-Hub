@@ -28,7 +28,7 @@ import type { ProductDoc } from "@/types/product";
 
 const CATEGORIES = ["All", "Vegetables", "Fruits", "Livestock", "Poultry", "Fish & Seafood", "Grains & Tubers", "Frozen Foods", "Kitchen"];
 
-export default function MarketplacePage() {
+function MarketplaceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const cartCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
@@ -274,5 +274,25 @@ export default function MarketplacePage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function MarketplacePage() {
+  return (
+    <React.Suspense fallback={
+      <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-10">
+        <div className="space-y-12 animate-pulse">
+          <div className="h-32 w-2/3 bg-white/5 rounded-3xl" />
+          <div className="h-16 w-full bg-white/5 rounded-[32px]" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="aspect-[4/3] rounded-[32px] bg-white/5" />
+            ))}
+          </div>
+        </div>
+      </main>
+    }>
+      <MarketplaceContent />
+    </React.Suspense>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -90,7 +89,7 @@ export default function NewProductPage() {
         bulkPricing,
         isPerishable,
         requiresColdChain,
-        maxVolumeTons: parsedMaxVolume || null
+        maxVolumeTons: parsedMaxVolume || undefined
       });
       toast.success("Product created with bulk options.");
       router.replace("/vendor/products");
@@ -232,9 +231,13 @@ export default function NewProductPage() {
               </section>
 
               <div className="flex items-center gap-4">
-                <Link href="/vendor/products" className="flex-1">
-                  <Button variant="ghost" className="w-full rounded-2xl h-12">Cancel</Button>
-                </Link>
+                <Button 
+                  variant="ghost" 
+                  className="flex-1 rounded-2xl h-12"
+                  onClick={() => router.push("/vendor/products")}
+                >
+                  Cancel
+                </Button>
                 <Button type="submit" disabled={busy} className="flex-1 rounded-2xl h-12 shadow-lift">
                   {busy ? "Creating Listing..." : "Create Listing"}
                 </Button>

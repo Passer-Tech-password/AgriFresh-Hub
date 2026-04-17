@@ -140,7 +140,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="pt-4">
-                  <Button variant="outline" className="rounded-xl border-white/10 text-white/60 hover:text-white hover:bg-white/5">
+                  <Button variant="secondary" className="rounded-xl border-white/10 text-white/60 hover:text-white hover:bg-white/5">
                     Edit Profile Details
                   </Button>
                 </div>

@@ -15,7 +15,8 @@ import {
   FileCheck, 
   Store,
   X,
-  AlertCircle
+  AlertCircle,
+  Shield
 } from "lucide-react";
 import { toast } from "sonner";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -28,6 +29,7 @@ import { useAuthStore } from "@/features/auth/auth-store";
 import { db, uploadFileWithProgress } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 import type { VendorApplicationDoc, BusinessDocument } from "@/types/vendor-application";
+import Link from "next/link";
 
 const PRODUCT_CATEGORIES = [
   "Vegetables", "Fruits", "Livestock", "Poultry", "Fish & Seafood", 

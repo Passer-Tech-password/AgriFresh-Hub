@@ -2,16 +2,13 @@
 
 import * as React from "react";
 import { 
-  Zap, 
   Sparkles, 
   ShieldCheck, 
   TrendingUp, 
   Truck, 
   Star, 
   X,
-  Crown,
-  CheckCircle2,
-  ChevronRight
+  Crown
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
@@ -38,16 +35,14 @@ export function ProPlanModal() {
   React.useEffect(() => {
     if (!userDoc || !userDoc.createdAt) return;
 
-    // Logic: 180 days after creation
     const createdDate = userDoc.createdAt.toDate();
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
-    
-    // For testing purposes, we might want to lower this or check a flag
-    // The requirement says "exactly 6 months (180 days)"
-    const isPro = !!userDoc.proExpiry;
+
+    // Exactly 6 months (180 days) check
+    const isPro = !!userDoc.proExpiry && userDoc.proExpiry.toDate() > now;
     const hasBeenPromptedRecently = userDoc.lastProPromptDismissed && 
-      (now.getTime() - userDoc.lastProPromptDismissed.toDate().getTime()) < (1000 * 60 * 60 * 24 * 7); // Remind every 7 days
+      (now.getTime() - userDoc.lastProPromptDismissed.toDate().getTime()) < (1000 * 60 * 60 * 24 * 7); 
 
     if (diffDays >= 180 && !isPro && !hasBeenPromptedRecently) {
       setShow(true);

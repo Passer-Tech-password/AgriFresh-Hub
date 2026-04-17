@@ -28,7 +28,7 @@ export default function OrderTrackingPage() {
   if (loading) return <div className="p-20 text-center text-white/40">Connecting to tracking server…</div>;
   if (!order) return <div className="p-20 text-center text-white/40">Order not found.</div>;
 
-  const temp = order.temperatureCelsius ?? 4.2; // Mock if not set
+  const temp = order.currentTemp ?? 4.2; // Mock if not set
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-10">

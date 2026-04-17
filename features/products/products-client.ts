@@ -75,7 +75,7 @@ export async function createProduct(input: {
     bulkPricing: input.bulkPricing || [],
     isPerishable: input.isPerishable,
     requiresColdChain: input.requiresColdChain,
-    maxVolumeTons: input.maxVolumeTons || null,
+    maxVolumeTons: input.maxVolumeTons ?? undefined,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   };

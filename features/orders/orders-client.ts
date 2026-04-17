@@ -25,15 +25,15 @@ export async function createOrder(args: {
   const payload: OrderWrite = {
     userId: args.userId,
     email: args.email ?? null,
-    status: "created",
+    status: "pending",
     type: args.type,
     currency: "NGN",
     amountKobo: args.amountKobo,
     items: args.items,
-    paystackReference: args.paystackReference || null,
+    paystackReference: args.paystackReference || undefined,
     requiresColdChain: args.requiresColdChain,
     isUpfrontPayment: args.isUpfrontPayment,
-    logisticsNotes: args.logisticsNotes || null,
+    logisticsNotes: args.logisticsNotes || undefined,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   };
@@ -42,7 +42,7 @@ export async function createOrder(args: {
 }
 
 export async function updateOrderTracking(orderId: string, data: {
-  temperatureCelsius?: number;
+  currentTemp?: number;
   currentLocation?: { lat: number; lng: number; address: string };
 }) {
   const ref = doc(db, "orders", orderId);

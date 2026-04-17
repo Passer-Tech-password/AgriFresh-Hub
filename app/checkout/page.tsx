@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { RequireAuth } from "@/components/require-auth";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/features/auth/auth-store";
-import { useCartStore, selectCartTotalKobo } from "@/features/cart/cart-store";
+import { useCartStore, selectCartTotalKobo, getEffectivePrice } from "@/features/cart/cart-store";
 import { createOrder, setOrderStatus } from "@/features/orders/orders-client";
 import { formatNairaFromKobo } from "@/lib/money";
 

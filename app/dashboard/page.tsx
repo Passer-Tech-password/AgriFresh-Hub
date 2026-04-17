@@ -220,7 +220,7 @@ export default function DashboardPage() {
                   <div className="text-2xl font-bold text-white">{userDoc?.creditsBalance || 0}</div>
                   <div className="text-xs text-white/40 uppercase tracking-widest font-bold">Credits Available</div>
                 </div>
-                <Button variant="outline" className="w-full rounded-xl border-white/10 text-white/70 hover:text-white hover:bg-white/5">Buy Credits</Button>
+                <Button variant="secondary" className="w-full rounded-xl border-white/10 text-white/70 hover:text-white hover:bg-white/5">Buy Credits</Button>
               </section>
 
               <section className="rounded-3xl border border-forest/25 bg-black/20 p-6 backdrop-blur space-y-4">

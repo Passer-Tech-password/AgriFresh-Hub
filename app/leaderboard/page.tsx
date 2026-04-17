@@ -26,7 +26,8 @@ import {
   History,
   Wallet,
   Loader2,
-  X
+  X,
+  ChevronDown
 } from "lucide-react";
 import { toast } from "sonner";
 

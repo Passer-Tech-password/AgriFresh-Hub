@@ -86,10 +86,10 @@ export default function AdminPage() {
                         {app.businessName}
                       </h3>
                       <div className="text-sm text-white/60">
-                        {app.location} · {app.phoneNumber}
+                        {app.location.city}, {app.location.state} · {app.phoneNumber}
                       </div>
                       <div className="flex flex-wrap gap-2 pt-1">
-                        {app.categories.map((c) => (
+                        {app.productCategories.map((c) => (
                           <span
                             key={c}
                             className="rounded-full bg-forest/30 px-2 py-0.5 text-[10px] uppercase tracking-wider text-leaf"
@@ -97,11 +97,6 @@ export default function AdminPage() {
                             {c}
                           </span>
                         ))}
-                        {app.hasColdChain && (
-                          <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-blue-300">
-                            Cold-Chain
-                          </span>
-                        )}
                       </div>
                     </div>
 

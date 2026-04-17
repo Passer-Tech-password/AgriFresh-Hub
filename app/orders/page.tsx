@@ -171,14 +171,14 @@ export default function OrdersPage() {
                           </div>
                           <div className="flex gap-2">
                             {order.status !== "pending" && order.status !== "cancelled" && (
-                              <Link href={`/orders/${order.id}/track`}>
+                              <Link href={`/orders/${order.id}/track` as any}>
                                 <Button variant="primary" size="sm" className="rounded-xl px-6 shadow-xl shadow-leaf/10">
                                   Track Live
                                   <MapPin className="ml-2 h-4 w-4" />
                                 </Button>
                               </Link>
                             )}
-                            <Link href={`/orders/${order.id}`}>
+                            <Link href={`/orders/${order.id}` as any}>
                               <Button variant="secondary" size="sm" className="rounded-xl border-white/10 text-white/60">Details</Button>
                             </Link>
                           </div>

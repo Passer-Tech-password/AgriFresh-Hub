@@ -87,7 +87,7 @@ export function Footer() {
                 <ul className="space-y-4">
                   {group.links.map((link) => (
                     <li key={link.label}>
-                      <Link href={link.href} className="group flex items-center text-sm text-white/60 transition-colors hover:text-leaf">
+                      <Link href={link.href as any} className="group flex items-center text-sm text-white/60 transition-colors hover:text-leaf">
                         {link.label}
                         <ArrowUpRight className="ml-1 h-3 w-3 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
                       </Link>

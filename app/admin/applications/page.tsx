@@ -26,11 +26,13 @@ import {
   FileText,
   ShieldCheck,
   AlertCircle,
-  X
+  X,
+  Loader2
 } from "lucide-react";
 
 import { RequireAuth } from "@/components/require-auth";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { db } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 import type { VendorApplicationDoc, BusinessDocument } from "@/types/vendor-application";

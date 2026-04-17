@@ -240,7 +240,7 @@ export default function TrackingPage() {
                   Chat with Driver
                 </Button>
               </section>
-            </div>
+            </aside>
           </div>
         </div>
       </main>
