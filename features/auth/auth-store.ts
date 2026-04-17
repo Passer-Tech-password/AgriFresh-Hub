@@ -29,6 +29,10 @@ export const useAuthStore = create<AuthState>((set) => {
     role: null,
     initAuthListener: () => {
       set({ status: "loading" });
+      if (!auth || !auth.app) {
+        set({ status: "signedOut", firebaseUser: null, userDoc: null, role: null });
+        return () => {};
+      }
       const authUnsub = onAuthStateChanged(auth, (user) => {
         if (userDocUnsub) {
           userDocUnsub();
@@ -68,7 +72,9 @@ export const useAuthStore = create<AuthState>((set) => {
         userDocUnsub();
         userDocUnsub = null;
       }
-      await firebaseSignOut(auth);
+      if (auth && auth.app) {
+        await firebaseSignOut(auth);
+      }
       set({ status: "signedOut", firebaseUser: null, userDoc: null, role: null });
     }
   };

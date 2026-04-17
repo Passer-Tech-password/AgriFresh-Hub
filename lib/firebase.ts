@@ -12,13 +12,17 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Handle potential undefined values during development reloads
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+// Handle potential undefined values during development reloads or server-side pre-rendering
+const isConfigValid = !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "your_api_key";
+const app = getApps().length 
+  ? getApp() 
+  : (isConfigValid ? initializeApp(firebaseConfig) : null);
 
 export const firebaseApp = app;
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+// Safely export Firebase services or a proxy during build
+export const auth = app ? getAuth(app) : ({} as any);
+export const db = app ? getFirestore(app) : ({} as any);
+export const storage = app ? getStorage(app) : ({} as any);
 
 /**
  * Uploads a file to Firebase Storage with progress tracking.
