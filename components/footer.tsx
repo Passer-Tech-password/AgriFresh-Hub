@@ -57,12 +57,12 @@ export function Footer() {
               </div>
               <div>
                 <span className="font-display text-2xl font-black tracking-tighter text-white">AgriFresh Hub</span>
-                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Rivers State Ecosystem</div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Nigeria's Ecosystem</div>
               </div>
             </div>
             
             <p className="max-w-md text-sm leading-relaxed text-white/50">
-              Nigeria's premium agri-tech marketplace. Empowering Rivers State farmers with 
+              Nigeria's premium agri-tech marketplace. Empowering  Nigerians farmers with 
               real-time cold-chain tracking and direct-to-buyer logistics.
             </p>
 
@@ -104,7 +104,7 @@ export function Footer() {
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
                 <MapPin className="h-3.5 w-3.5 text-leaf" />
-                Port Harcourt, Nigeria
+                Nigeria LTD
               </div>
               <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
                 <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
@@ -113,7 +113,7 @@ export function Footer() {
             </div>
             
             <p className="text-[10px] font-bold uppercase tracking-widest text-white/20">
-              AgriFresh Hub © 2026 – Port Harcourt, Nigeria
+              AgriFresh Hub © 2026 – Nigeria LTD
             </p>
           </div>
         </div>

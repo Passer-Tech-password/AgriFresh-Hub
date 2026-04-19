@@ -3,10 +3,22 @@
 import * as React from "react";
 import Link from "next/link";
 import { collection, onSnapshot, query, where, orderBy, limit } from "firebase/firestore";
+import { 
+  ShieldCheck, 
+  Wallet, 
+  History, 
+  TrendingUp, 
+  LogOut, 
+  User, 
+  LayoutDashboard, 
+  ShoppingBag,
+  Plus,
+  ArrowRight
+} from "lucide-react";
 
 import { RequireAuth } from "@/components/require-auth";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/features/auth/auth-store";
+import { useAuthStore, useIsPro } from "@/features/auth/auth-store";
 import { db } from "@/lib/firebase";
 import { formatNairaFromKobo } from "@/lib/money";
 import type { OrderDoc } from "@/types/order";
@@ -16,6 +28,7 @@ export default function DashboardPage() {
   const userDoc = useAuthStore((s) => s.userDoc);
   const role = useAuthStore((s) => s.role);
   const signOut = useAuthStore((s) => s.signOut);
+  const isPro = useIsPro();
 
   const [activeOrders, setActiveOrders] = React.useState<OrderDoc[]>([]);
   const [loadingOrders, setLoadingOrders] = React.useState(true);
@@ -76,13 +89,17 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-3">
               <Link href="/profile">
-                <Button variant="secondary" className="rounded-2xl border border-white/10 text-white/60 hover:text-white hover:bg-white/5">Profile</Button>
+                <Button variant="secondary" className="rounded-2xl border border-white/10 text-white/60 hover:text-white hover:bg-white/5">
+                  <User className="mr-2 h-4 w-4" /> Profile
+                </Button>
               </Link>
               <Link href="/leaderboard">
-                <Button variant="secondary" className="rounded-2xl border border-gold/20 text-gold hover:bg-gold/10">Leaderboard</Button>
+                <Button variant="secondary" className="rounded-2xl border border-gold/20 text-gold hover:bg-gold/10">
+                  <TrendingUp className="mr-2 h-4 w-4" /> Leaderboard
+                </Button>
               </Link>
               <Button variant="ghost" className="text-white/40 hover:text-white rounded-2xl" onClick={() => signOut()}>
-                Sign Out
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
               </Button>
             </div>
           </header>
@@ -90,12 +107,30 @@ export default function DashboardPage() {
           <section className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2 space-y-8">
               {!role && (
-                <div className="rounded-3xl border border-forest/25 bg-black/20 p-8 backdrop-blur space-y-4">
-                  <div className="font-display text-2xl font-semibold text-white">Profile not ready</div>
-                  <p className="text-sm text-white/60">
-                    Your account exists, but your profile document is missing. If this is a
-                    legacy account, contact support.
-                  </p>
+                <div className="space-y-6">
+                  <div className="rounded-3xl border border-forest/25 bg-black/20 p-8 backdrop-blur space-y-4">
+                    <div className="font-display text-2xl font-semibold text-white">Profile not ready</div>
+                    <p className="text-sm text-white/60">
+                      Your account exists, but your profile document is missing or your role hasn't been assigned yet.
+                    </p>
+                  </div>
+                  
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-3xl border border-forest/20 bg-black/20 p-6 backdrop-blur space-y-3">
+                      <h4 className="font-bold text-white">Start Shopping</h4>
+                      <p className="text-xs text-white/40">Browse our selection of farm-fresh produce.</p>
+                      <Link href="/marketplace">
+                        <Button variant="secondary" size="sm" className="w-full rounded-xl">Marketplace</Button>
+                      </Link>
+                    </div>
+                    <div className="rounded-3xl border border-gold/20 bg-black/20 p-6 backdrop-blur space-y-3">
+                      <h4 className="font-bold text-white">Become a Vendor</h4>
+                      <p className="text-xs text-white/40">Apply to sell your products on AgriFresh Hub.</p>
+                      <Link href="/vendor/apply">
+                        <Button variant="secondary" size="sm" className="w-full rounded-xl border-gold/20 text-gold hover:bg-gold/5">Vendor Application</Button>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -107,12 +142,17 @@ export default function DashboardPage() {
                       <p className="text-sm text-white/60">Browse fresh produce and track your active orders.</p>
                     </div>
                     <Link href="/marketplace">
-                      <Button size="lg" className="rounded-2xl h-12 px-8">Open Marketplace</Button>
+                      <Button size="lg" className="rounded-2xl h-12 px-8">
+                        <ShoppingBag className="mr-2 h-5 w-5" /> Open Marketplace
+                      </Button>
                     </Link>
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest px-1">Recent Orders</h3>
+                    <div className="flex items-center justify-between px-1">
+                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest">Recent Orders</h3>
+                      <History className="h-3 w-3 text-white/20" />
+                    </div>
                     {loadingOrders ? (
                       <div className="text-center py-10 text-white/20">Loading orders…</div>
                     ) : activeOrders.length === 0 ? (
@@ -159,6 +199,10 @@ export default function DashboardPage() {
                 <div className="space-y-6">
                   <div className="rounded-3xl border border-forest/25 bg-gradient-to-br from-[#071512] to-black/20 p-8 backdrop-blur space-y-6">
                     <div className="space-y-2">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-leaf/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-leaf border border-leaf/20">
+                        <ShieldCheck className="h-3 w-3" />
+                        Verified Store
+                      </div>
                       <h3 className="font-display text-2xl font-semibold text-white">Vendor approved</h3>
                       <p className="text-sm text-white/60 leading-relaxed">
                         Your products are live in the marketplace. You can now manage bulk orders, 
@@ -166,39 +210,42 @@ export default function DashboardPage() {
                       </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                      <Link href="/vendor/products">
-                        <Button size="lg" className="w-full rounded-2xl">Manage Products</Button>
+                      <Link href="/vendor/dashboard">
+                        <Button size="lg" className="w-full rounded-2xl shadow-lift shadow-leaf/10">
+                          <LayoutDashboard className="mr-2 h-5 w-5" /> Open Store Dashboard
+                        </Button>
                       </Link>
-                      <Link href="/vendor/inquiries">
-                        <Button variant="secondary" size="lg" className="w-full rounded-2xl relative overflow-hidden group">
-                          <span className="relative z-10 flex items-center justify-center gap-2">
-                            Bulk Inquiries
-                            <span className="flex h-2 w-2 rounded-full bg-leaf shadow-[0_0_10px_rgba(74,222,128,1)] animate-pulse" />
-                          </span>
+                      <Link href="/vendor/products">
+                        <Button variant="secondary" size="lg" className="w-full rounded-2xl border-white/10">
+                          <ShoppingBag className="mr-2 h-5 w-5" /> Manage Products
                         </Button>
                       </Link>
                     </div>
                   </div>
 
                   {/* Pro Plan Prompt */}
-                  <div className="rounded-3xl border border-gold/30 bg-gold/10 p-8 backdrop-blur relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-20">
-                      <svg className="w-16 h-16 text-gold" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                      </svg>
+                  {!isPro && (
+                    <div className="rounded-3xl border border-gold/30 bg-gold/10 p-8 backdrop-blur relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 opacity-20">
+                        <svg className="w-16 h-16 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                        </svg>
+                      </div>
+                      <div className="space-y-3 relative z-10">
+                        <div className="text-xs font-bold text-gold uppercase tracking-widest">Growth Plan</div>
+                        <div className="font-display text-xl font-semibold text-white">Scale your farm business?</div>
+                        <p className="text-sm text-white/60 leading-relaxed">
+                          Upgrade to **AgriFresh Pro** for unlimited bulk inquiries, prioritized listing placement, 
+                          and advanced cold-chain analytics. First 6 months are free!
+                        </p>
+                        <Link href="/pro">
+                          <Button variant="ghost" className="text-gold hover:text-gold hover:bg-gold/10 p-0 h-auto font-semibold">
+                            Learn more about Pro →
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="space-y-3 relative z-10">
-                      <div className="text-xs font-bold text-gold uppercase tracking-widest">Growth Plan</div>
-                      <div className="font-display text-xl font-semibold text-white">Scale your farm business?</div>
-                      <p className="text-sm text-white/60 leading-relaxed">
-                        Upgrade to **AgriFresh Pro** for unlimited bulk inquiries, prioritized listing placement, 
-                        and advanced cold-chain analytics. First 6 months are free!
-                      </p>
-                      <Button variant="ghost" className="text-gold hover:text-gold hover:bg-gold/10 p-0 h-auto font-semibold">
-                        Learn more about Pro →
-                      </Button>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
 
@@ -217,18 +264,32 @@ export default function DashboardPage() {
               <section className="rounded-3xl border border-forest/25 bg-black/20 p-6 backdrop-blur space-y-4">
                 <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest px-1">Wallet & Credits</h3>
                 <div className="p-5 rounded-2xl bg-leaf/5 border border-leaf/20">
-                  <div className="text-2xl font-bold text-white">{userDoc?.creditsBalance || 0}</div>
+                  <div className="flex items-center justify-between mb-1">
+                    <Wallet className="h-4 w-4 text-leaf" />
+                    <span className="text-[10px] font-bold text-leaf uppercase tracking-widest">Balance</span>
+                  </div>
+                  <div className="text-2xl font-bold text-white">{userDoc?.creditsBalance?.toLocaleString() || 0}</div>
                   <div className="text-xs text-white/40 uppercase tracking-widest font-bold">Credits Available</div>
                 </div>
-                <Button variant="secondary" className="w-full rounded-xl border-white/10 text-white/70 hover:text-white hover:bg-white/5">Buy Credits</Button>
+                <Link href="/credits" className="block">
+                  <Button variant="secondary" className="w-full rounded-xl border-white/10 text-white/70 hover:text-white hover:bg-white/5">
+                    <Plus className="mr-2 h-4 w-4" /> Buy Credits
+                  </Button>
+                </Link>
               </section>
 
               <section className="rounded-3xl border border-forest/25 bg-black/20 p-6 backdrop-blur space-y-4">
-                <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest px-1">Profile Summary</h3>
+                <div className="flex items-center justify-between px-1">
+                  <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest">Profile Summary</h3>
+                  <User className="h-3 w-3 text-white/20" />
+                </div>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-white/40">Status</span>
-                    <span className="text-leaf font-semibold">Verified</span>
+                    <span className="text-leaf font-semibold flex items-center gap-1">
+                      <ShieldCheck className="h-3 w-3" />
+                      Verified
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-white/40">Member since</span>

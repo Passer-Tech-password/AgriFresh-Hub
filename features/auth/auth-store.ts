@@ -87,3 +87,13 @@ export const useRole = () => useAuthStore((s) => s.role);
 export const useIsSignedIn = () => useAuthStore((s) => s.status === "signedIn");
 
 export const useIsAdmin = () => useAuthStore((s) => s.role === "admin");
+
+export const useIsPro = () => useAuthStore((s) => {
+  if (!s.userDoc?.proExpiry) return false;
+  try {
+    const expiry = s.userDoc.proExpiry.toDate();
+    return expiry > new Date();
+  } catch {
+    return false;
+  }
+});

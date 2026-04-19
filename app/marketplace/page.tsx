@@ -21,6 +21,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/features/cart/cart-store";
+import { useAuthStore } from "@/features/auth/auth-store";
 import { listMarketplaceProducts } from "@/features/products/products-client";
 import { formatNairaFromKobo } from "@/lib/money";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,8 @@ const CATEGORIES = ["All", "Vegetables", "Fruits", "Livestock", "Poultry", "Fish
 function MarketplaceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const user = useAuthStore((s) => s.firebaseUser);
+  const role = useAuthStore((s) => s.role);
   const cartCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
 
   const [loading, setLoading] = React.useState(true);
@@ -96,7 +99,10 @@ function MarketplaceContent() {
                 )}
               </Button>
             </Link>
-            <Link href="/dashboard">
+            <Link href={
+              !user ? "/auth/login" : 
+              role === "vendor_approved" ? "/vendor/dashboard" : "/dashboard"
+            }>
               <Button variant="ghost" className="h-12 rounded-2xl text-white/40 hover:text-white">Dashboard</Button>
             </Link>
           </div>

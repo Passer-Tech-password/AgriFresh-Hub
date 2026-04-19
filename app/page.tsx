@@ -111,7 +111,7 @@ export default function HomePage() {
               Verified Cold-Chain Logic
             </div>
             <h1 className="font-display text-4xl font-bold leading-[1.1] text-white sm:text-6xl">
-              {greeting}, <span className="text-leaf">{userDoc?.displayName?.split(' ')[0] || "Friend"}</span> — what’s fresh in <span className="text-gold">Port Harcourt</span> today?
+              {greeting}, <span className="text-leaf">{userDoc?.displayName?.split(' ')[0] || "Friend"}</span> — what’s fresh in <span className="text-gold">Around Us</span> today?
             </h1>
             <p className="max-w-xl text-lg leading-relaxed text-white/60">
               Premium Nigerian produce, livestock, and perishables delivered from farm to door with 

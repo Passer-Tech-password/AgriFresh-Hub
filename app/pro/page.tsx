@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/features/auth/auth-store";
 import { db } from "@/lib/firebase";
+import { paystackService } from "@/services/paystack-service";
 import { cn } from "@/lib/utils";
 
 const TIERS = [
@@ -65,37 +66,51 @@ const TIERS = [
 export default function ProPage() {
   const router = useRouter();
   const user = useAuthStore((s) => s.firebaseUser);
+  const role = useAuthStore((s) => s.role);
   const [busyId, setBusyId] = React.useState<string | null>(null);
 
   const handleSubscribe = async (tierId: string) => {
-    if (!user) {
-      toast.error("Please sign in to subscribe.");
+    if (!user || !user.email) {
+      toast.error("Please sign in with a valid email to subscribe.");
       return;
     }
+
+    const tier = TIERS.find(t => t.id === tierId);
+    if (!tier) return;
 
     setBusyId(tierId);
     
     try {
-      // Simulate Paystack recurring payment
-      await new Promise(r => setTimeout(r, 2000));
+      await paystackService.startTransaction({
+        email: user.email,
+        amountKobo: tier.price * 100, // Convert Naira to Kobo
+        metadata: {
+          tierId,
+          userId: user.uid,
+          planName: tier.name
+        },
+        onSuccess: async (reference) => {
+          const expiry = new Date();
+          expiry.setMonth(expiry.getMonth() + 1);
 
-      const expiry = new Date();
-      expiry.setMonth(expiry.getMonth() + 1);
+          await updateDoc(doc(db, "users", user.uid), {
+            proExpiry: Timestamp.fromDate(expiry),
+            updatedAt: serverTimestamp()
+          });
 
-      await updateDoc(doc(db, "users", user.uid), {
-        proExpiry: Timestamp.fromDate(expiry),
-        updatedAt: serverTimestamp()
+          toast.success("Welcome to AgriFresh Pro!", {
+            icon: <Crown className="h-4 w-4 text-gold" />,
+            duration: 5000
+          });
+          router.push("/dashboard");
+        },
+        onCancel: () => {
+          setBusyId(null);
+        }
       });
-
-      toast.success("Welcome to AgriFresh Pro!", {
-        icon: <Crown className="h-4 w-4 text-gold" />,
-        duration: 5000
-      });
-      router.push("/dashboard");
     } catch (err) {
       console.error("Subscription failed:", err);
       toast.error("Payment failed. Please try again.");
-    } finally {
       setBusyId(null);
     }
   };
@@ -105,7 +120,7 @@ export default function ProPage() {
       <div className="space-y-12">
         <header className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-4 text-center lg:text-left">
-            <Link href="/dashboard" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/40 transition-colors hover:text-leaf">
+            <Link href={role === "vendor_approved" ? "/vendor/dashboard" : "/dashboard"} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/40 transition-colors hover:text-leaf">
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
             </Link>
