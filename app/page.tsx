@@ -67,7 +67,7 @@ const FEATURED_PRODUCTS = [
     unit: "per bundle",
     freshness: "98%",
     timeLeft: "24hrs left",
-    image: "https://images.unsplash.com/photo-1566385101042-1a0aa0c1234c?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1627484394148-9254ad353e04?auto=format&fit=crop&q=80&w=800",
     moq: "5 bundles",
     location: "Obio-Akpor, PH"
   },
@@ -103,7 +103,7 @@ const FEATURED_PRODUCTS = [
     unit: "per kg",
     freshness: "95%",
     timeLeft: "Cold-chain",
-    image: "https://images.unsplash.com/photo-1567622417582-759738473231?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&q=80&w=800",
     moq: "2 kg",
     location: "Mile 1, PH"
   },
@@ -127,7 +127,7 @@ const FEATURED_PRODUCTS = [
     unit: "per kg",
     freshness: "100%",
     timeLeft: "Live",
-    image: "https://images.unsplash.com/photo-1534073737927-85f1dfffec05?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=800",
     moq: "5 kg",
     location: "Trans Amadi, PH"
   }
