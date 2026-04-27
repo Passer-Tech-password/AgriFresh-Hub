@@ -13,7 +13,10 @@ import {
   Utensils, 
   ArrowRight,
   Clock,
-  MapPin
+  MapPin,
+  Fish,
+  Wheat,
+  Beef
 } from "lucide-react";
 
 import { useAuthStore } from "@/features/auth/auth-store";
@@ -22,7 +25,10 @@ import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
   { name: "Vegetables", icon: Leaf, color: "text-emerald-400" },
-  { name: "Livestock", icon: Bird, color: "text-orange-400" },
+  { name: "Grains & Tubers", icon: Wheat, color: "text-yellow-600" },
+  { name: "Livestock", icon: Beef, color: "text-rose-600" },
+  { name: "Poultry", icon: Bird, color: "text-orange-400" },
+  { name: "Fish & Seafood", icon: Fish, color: "text-cyan-400" },
   { name: "Frozen Foods", icon: Snowflake, color: "text-blue-400" },
   { name: "Perishables", icon: Thermometer, color: "text-rose-400" },
   { name: "Kitchen", icon: Utensils, color: "text-amber-400" },
@@ -32,6 +38,7 @@ const FEATURED_PRODUCTS = [
   {
     id: "okra-1",
     name: "Fresh Okra Bundles",
+    category: "Vegetables",
     price: "₦2,500",
     unit: "per bundle",
     freshness: "98%",
@@ -41,8 +48,21 @@ const FEATURED_PRODUCTS = [
     location: "Obio-Akpor, PH"
   },
   {
+    id: "yam-1",
+    name: "Premium Yam Tubers",
+    category: "Grains & Tubers",
+    price: "₦45,000",
+    unit: "per ton",
+    freshness: "95%",
+    timeLeft: "Farm Fresh",
+    image: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?auto=format&fit=crop&q=80&w=800",
+    moq: "1 ton",
+    location: "Rivers State"
+  },
+  {
     id: "chicken-1",
     name: "Live Broiler Chicken",
+    category: "Poultry",
     price: "₦8,500",
     unit: "per bird",
     freshness: "100%",
@@ -52,8 +72,45 @@ const FEATURED_PRODUCTS = [
     location: "Choba, PH"
   },
   {
+    id: "snails-1",
+    name: "Jumbo Forest Snails",
+    category: "Livestock",
+    price: "₦12,000",
+    unit: "per dozen",
+    freshness: "99%",
+    timeLeft: "Freshly Harvested",
+    image: "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?auto=format&fit=crop&q=80&w=800",
+    moq: "3 dozen",
+    location: "Omagwa, PH"
+  },
+  {
+    id: "catfish-1",
+    name: "Fresh Point-and-Kill Catfish",
+    category: "Fish & Seafood",
+    price: "₦3,500",
+    unit: "per kg",
+    freshness: "100%",
+    timeLeft: "Live",
+    image: "https://images.unsplash.com/photo-1534073737927-85f1dfffec05?auto=format&fit=crop&q=80&w=800",
+    moq: "5 kg",
+    location: "Trans Amadi, PH"
+  },
+  {
+    id: "titus-1",
+    name: "Frozen Titus Fish (Mackerel)",
+    category: "Frozen Foods",
+    price: "₦65,000",
+    unit: "per crate",
+    freshness: "95%",
+    timeLeft: "Cold-chain",
+    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=800",
+    moq: "1 crate",
+    location: "Mile 1, PH"
+  },
+  {
     id: "tomato-1",
     name: "Plum Tomatoes (Crate)",
+    category: "Perishables",
     price: "₦45,000",
     unit: "per crate",
     freshness: "95%",
@@ -61,6 +118,18 @@ const FEATURED_PRODUCTS = [
     image: "https://images.unsplash.com/photo-1518977676601-b53f02ac6d31?auto=format&fit=crop&q=80&w=800",
     moq: "1 crate",
     location: "Mile 1, PH"
+  },
+  {
+    id: "knife-1",
+    name: "Stainless Steel Knife Set",
+    category: "Kitchen",
+    price: "₦18,500",
+    unit: "per set",
+    freshness: "New",
+    timeLeft: "In Stock",
+    image: "https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&q=80&w=800",
+    moq: "1 set",
+    location: "Garrison, PH"
   }
 ];
 
@@ -157,19 +226,19 @@ export default function HomePage() {
         <div className="flex items-center justify-between px-2">
           <div className="space-y-1">
             <h2 className="font-display text-2xl font-bold text-white">Featured Deals</h2>
-            <p className="text-xs text-white/40">Handpicked farm-fresh produce near you</p>
+            <p className="text-xs text-white/40">Handpicked farm-fresh produce across all our categories</p>
           </div>
           <Link href="/marketplace" className="text-sm font-bold text-leaf hover:underline">View All</Link>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURED_PRODUCTS.map((product) => (
             <div 
               key={product.id}
-              className="group relative overflow-hidden rounded-[32px] border border-forest/20 bg-gradient-to-b from-[#0A3D33]/40 to-transparent p-4 transition-all duration-300 hover:-translate-y-2 hover:border-leaf/30 hover:shadow-lift"
+              className="group relative flex flex-col overflow-hidden rounded-[32px] border border-forest/20 bg-gradient-to-b from-[#0A3D33]/40 to-transparent p-4 transition-all duration-300 hover:-translate-y-2 hover:border-leaf/30 hover:shadow-lift"
             >
               {/* Product Image */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+              <div className="relative aspect-square overflow-hidden rounded-2xl">
                 <img 
                   src={product.image} 
                   alt={product.name} 
@@ -181,38 +250,43 @@ export default function HomePage() {
                 </div>
                 <div className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/20 px-2.5 py-1 text-[10px] font-bold text-gold backdrop-blur-md">
                   <Sparkles className="h-3 w-3" />
-                  {product.freshness} Fresh
+                  {product.freshness}
                 </div>
               </div>
 
               {/* Content */}
-              <div className="mt-5 space-y-4">
+              <div className="mt-5 flex flex-1 flex-col justify-between space-y-4">
                 <div className="space-y-1">
-                  <h4 className="font-display text-lg font-bold text-white">{product.name}</h4>
-                  <div className="flex items-center gap-2 text-xs text-white/40">
-                    <Clock className="h-3 w-3" />
-                    {product.timeLeft}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-leaf/80">{product.category}</span>
+                    <div className="flex items-center gap-1 text-[10px] text-white/40">
+                      <Clock className="h-2.5 w-2.5" />
+                      {product.timeLeft}
+                    </div>
                   </div>
+                  <h4 className="font-display text-base font-bold text-white line-clamp-1 group-hover:text-leaf transition-colors">{product.name}</h4>
                 </div>
 
-                <div className="flex items-end justify-between">
-                  <div className="space-y-0.5">
-                    <div className="text-2xl font-black text-white">{product.price}</div>
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-white/30">{product.unit}</div>
+                <div className="space-y-3">
+                  <div className="flex items-end justify-between">
+                    <div className="space-y-0.5">
+                      <div className="text-xl font-black text-white">{product.price}</div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-white/30">{product.unit}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-leaf/60">Min Order</div>
+                      <div className="text-sm font-bold text-white">{product.moq}</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-leaf">MOQ</div>
-                    <div className="text-sm font-bold text-white">{product.moq}</div>
-                  </div>
-                </div>
 
-                <Button variant="primary" className="group relative w-full overflow-hidden rounded-xl h-11">
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    Add to Cart
-                    <ShoppingBag className="h-4 w-4" />
-                  </span>
-                  <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                </Button>
+                  <Button variant="primary" className="group relative w-full overflow-hidden rounded-xl h-10 text-xs">
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      Add to Cart
+                      <ShoppingBag className="h-3.5 w-3.5" />
+                    </span>
+                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
