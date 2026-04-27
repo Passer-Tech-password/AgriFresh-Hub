@@ -36,19 +36,79 @@ const CATEGORIES = [
 
 const FEATURED_PRODUCTS = [
   {
-    id: "okra-1",
-    name: "Fresh Okra Bundles",
+    id: "food-1",
+    name: "Traditional Soup Pack",
+    category: "Food",
+    price: "₦15,000",
+    unit: "per pack",
+    freshness: "100%",
+    timeLeft: "Cooked Today",
+    image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=800",
+    moq: "1 pack",
+    location: "Port Harcourt"
+  },
+  {
+    id: "kitchen-1",
+    name: "Professional Knife Set",
+    category: "Kitchen",
+    price: "₦18,500",
+    unit: "per set",
+    freshness: "New",
+    timeLeft: "In Stock",
+    image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800",
+    moq: "1 set",
+    location: "Garrison, PH"
+  },
+  {
+    id: "veg-1",
+    name: "Organic Okra Bundles",
     category: "Vegetables",
     price: "₦2,500",
     unit: "per bundle",
     freshness: "98%",
     timeLeft: "24hrs left",
-    image: "https://images.unsplash.com/photo-1627484394148-9254ad353e04?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1566385101042-1a0aa0c1234c?auto=format&fit=crop&q=80&w=800",
     moq: "5 bundles",
     location: "Obio-Akpor, PH"
   },
   {
-    id: "yam-1",
+    id: "fruit-1",
+    name: "Sweet Local Oranges",
+    category: "Fruits",
+    price: "₦3,500",
+    unit: "per crate",
+    freshness: "95%",
+    timeLeft: "Farm Fresh",
+    image: "https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&q=80&w=800",
+    moq: "2 crates",
+    location: "Rivers State"
+  },
+  {
+    id: "livestock-1",
+    name: "Live West African Goat",
+    category: "Livestock",
+    price: "₦45,000",
+    unit: "per head",
+    freshness: "100%",
+    timeLeft: "Healthy",
+    image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80&w=800",
+    moq: "1 head",
+    location: "Choba, PH"
+  },
+  {
+    id: "frozen-1",
+    name: "Frozen Chicken Wings",
+    category: "Frozen Food",
+    price: "₦4,200",
+    unit: "per kg",
+    freshness: "95%",
+    timeLeft: "Cold-chain",
+    image: "https://images.unsplash.com/photo-1567622417582-759738473231?auto=format&fit=crop&q=80&w=800",
+    moq: "2 kg",
+    location: "Mile 1, PH"
+  },
+  {
+    id: "grains-1",
     name: "Premium Yam Tubers",
     category: "Grains & Tubers",
     price: "₦45,000",
@@ -60,32 +120,8 @@ const FEATURED_PRODUCTS = [
     location: "Rivers State"
   },
   {
-    id: "chicken-1",
-    name: "Live Broiler Chicken",
-    category: "Poultry",
-    price: "₦8,500",
-    unit: "per bird",
-    freshness: "100%",
-    timeLeft: "Farm Fresh",
-    image: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&q=80&w=800",
-    moq: "10 birds",
-    location: "Choba, PH"
-  },
-  {
-    id: "snails-1",
-    name: "Jumbo Forest Snails",
-    category: "Livestock",
-    price: "₦12,000",
-    unit: "per dozen",
-    freshness: "99%",
-    timeLeft: "Freshly Harvested",
-    image: "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?auto=format&fit=crop&q=80&w=800",
-    moq: "3 dozen",
-    location: "Omagwa, PH"
-  },
-  {
-    id: "catfish-1",
-    name: "Fresh Point-and-Kill Catfish",
+    id: "seafood-1",
+    name: "Fresh Catfish",
     category: "Fish & Seafood",
     price: "₦3,500",
     unit: "per kg",
@@ -94,42 +130,6 @@ const FEATURED_PRODUCTS = [
     image: "https://images.unsplash.com/photo-1534073737927-85f1dfffec05?auto=format&fit=crop&q=80&w=800",
     moq: "5 kg",
     location: "Trans Amadi, PH"
-  },
-  {
-    id: "titus-1",
-    name: "Frozen Titus Fish (Mackerel)",
-    category: "Frozen Foods",
-    price: "₦65,000",
-    unit: "per crate",
-    freshness: "95%",
-    timeLeft: "Cold-chain",
-    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=800",
-    moq: "1 crate",
-    location: "Mile 1, PH"
-  },
-  {
-    id: "tomato-1",
-    name: "Plum Tomatoes (Crate)",
-    category: "Perishables",
-    price: "₦45,000",
-    unit: "per crate",
-    freshness: "95%",
-    timeLeft: "Cold-chain",
-    image: "https://images.unsplash.com/photo-1518977676601-b53f02ac6d31?auto=format&fit=crop&q=80&w=800",
-    moq: "1 crate",
-    location: "Mile 1, PH"
-  },
-  {
-    id: "knife-1",
-    name: "Stainless Steel Knife Set",
-    category: "Kitchen",
-    price: "₦18,500",
-    unit: "per set",
-    freshness: "New",
-    timeLeft: "In Stock",
-    image: "https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&q=80&w=800",
-    moq: "1 set",
-    location: "Garrison, PH"
   }
 ];
 
