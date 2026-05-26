@@ -58,4 +58,4 @@ Nigeria's premium agri-tech marketplace for Rivers State.
 4. Deploy!
 
 ## License
-AgriFresh Hub © 2026 – Port Harcourt, Nigeria
+AgriFresh Hub © 2026 – Nigeria.

@@ -20,8 +20,11 @@ import {
 } from "lucide-react";
 
 import { useAuthStore } from "@/features/auth/auth-store";
+import { listMarketplaceProducts } from "@/features/products/products-client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { formatNairaFromKobo } from "@/lib/money";
+import { ProductDoc } from "@/types/product";
 
 const CATEGORIES = [
   { name: "Vegetables", icon: Leaf, color: "text-emerald-400" },
@@ -34,113 +37,28 @@ const CATEGORIES = [
   { name: "Kitchen", icon: Utensils, color: "text-amber-400" },
 ];
 
-const FEATURED_PRODUCTS = [
-  {
-    id: "food-1",
-    name: "Traditional Soup Pack",
-    category: "Food",
-    price: "₦15,000",
-    unit: "per pack",
-    freshness: "100%",
-    timeLeft: "Cooked Today",
-    image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=800",
-    moq: "1 pack",
-    location: "Port Harcourt"
-  },
-  {
-    id: "kitchen-1",
-    name: "Professional Knife Set",
-    category: "Kitchen",
-    price: "₦18,500",
-    unit: "per set",
-    freshness: "New",
-    timeLeft: "In Stock",
-    image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800",
-    moq: "1 set",
-    location: "Garrison, PH"
-  },
-  {
-    id: "veg-1",
-    name: "Organic Okra Bundles",
-    category: "Vegetables",
-    price: "₦2,500",
-    unit: "per bundle",
-    freshness: "98%",
-    timeLeft: "24hrs left",
-    image: "https://images.unsplash.com/photo-1627484394148-9254ad353e04?auto=format&fit=crop&q=80&w=800",
-    moq: "5 bundles",
-    location: "Obio-Akpor, PH"
-  },
-  {
-    id: "fruit-1",
-    name: "Sweet Local Oranges",
-    category: "Fruits",
-    price: "₦3,500",
-    unit: "per crate",
-    freshness: "95%",
-    timeLeft: "Farm Fresh",
-    image: "https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&q=80&w=800",
-    moq: "2 crates",
-    location: "Rivers State"
-  },
-  {
-    id: "livestock-1",
-    name: "Live West African Goat",
-    category: "Livestock",
-    price: "₦45,000",
-    unit: "per head",
-    freshness: "100%",
-    timeLeft: "Healthy",
-    image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80&w=800",
-    moq: "1 head",
-    location: "Choba, PH"
-  },
-  {
-    id: "frozen-1",
-    name: "Frozen Chicken Wings",
-    category: "Frozen Food",
-    price: "₦4,200",
-    unit: "per kg",
-    freshness: "95%",
-    timeLeft: "Cold-chain",
-    image: "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&q=80&w=800",
-    moq: "2 kg",
-    location: "Mile 1, PH"
-  },
-  {
-    id: "grains-1",
-    name: "Premium Yam Tubers",
-    category: "Grains & Tubers",
-    price: "₦45,000",
-    unit: "per ton",
-    freshness: "95%",
-    timeLeft: "Farm Fresh",
-    image: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?auto=format&fit=crop&q=80&w=800",
-    moq: "1 ton",
-    location: "Rivers State"
-  },
-  {
-    id: "seafood-1",
-    name: "Fresh Catfish",
-    category: "Fish & Seafood",
-    price: "₦3,500",
-    unit: "per kg",
-    freshness: "100%",
-    timeLeft: "Live",
-    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=800",
-    moq: "5 kg",
-    location: "Trans Amadi, PH"
-  }
-];
-
 export default function HomePage() {
   const userDoc = useAuthStore((s) => s.userDoc);
   const [greeting, setGreeting] = React.useState("Good morning");
+  const [products, setProducts] = React.useState<(ProductDoc & { id: string })[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const hour = new Date().getHours();
     if (hour >= 12 && hour < 17) setGreeting("Good afternoon");
     else if (hour >= 17) setGreeting("Good evening");
+
+    async function loadProducts() {
+      try {
+        const data = await listMarketplaceProducts(8);
+        setProducts(data as (ProductDoc & { id: string })[]);
+      } catch (err) {
+        console.error("Failed to load products:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProducts();
   }, []);
 
   return (
@@ -232,64 +150,82 @@ export default function HomePage() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURED_PRODUCTS.map((product) => (
-            <div 
-              key={product.id}
-              className="group relative flex flex-col overflow-hidden rounded-[32px] border border-forest/20 bg-gradient-to-b from-[#0A3D33]/40 to-transparent p-4 transition-all duration-300 hover:-translate-y-2 hover:border-leaf/30 hover:shadow-lift"
-            >
-              {/* Product Image */}
-              <div className="relative aspect-square overflow-hidden rounded-2xl">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-md">
-                  <MapPin className="h-3 w-3 text-leaf" />
-                  {product.location}
-                </div>
-                <div className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/20 px-2.5 py-1 text-[10px] font-bold text-gold backdrop-blur-md">
-                  <Sparkles className="h-3 w-3" />
-                  {product.freshness}
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="mt-5 flex flex-1 flex-col justify-between space-y-4">
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-leaf/80">{product.category}</span>
-                    <div className="flex items-center gap-1 text-[10px] text-white/40">
-                      <Clock className="h-2.5 w-2.5" />
-                      {product.timeLeft}
-                    </div>
+          {loading ? (
+            // Skeleton Loading State
+            [...Array(4)].map((_, i) => (
+              <div key={i} className="h-[400px] animate-pulse rounded-[32px] bg-white/5 border border-forest/10" />
+            ))
+          ) : products.length > 0 ? (
+            products.map((product) => (
+              <div 
+                key={product.id}
+                className="group relative flex flex-col overflow-hidden rounded-[32px] border border-forest/20 bg-gradient-to-b from-[#0A3D33]/40 to-transparent p-4 transition-all duration-300 hover:-translate-y-2 hover:border-leaf/30 hover:shadow-lift"
+              >
+                {/* Product Image */}
+                <div className="relative aspect-square overflow-hidden rounded-2xl">
+                  <img 
+                    src={product.imageUrl || "https://images.unsplash.com/photo-1615485290382-441e4d019cb5?auto=format&fit=crop&q=80&w=800"} 
+                    alt={product.name} 
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-md">
+                    <MapPin className="h-3 w-3 text-leaf" />
+                    Rivers State
                   </div>
-                  <h4 className="font-display text-base font-bold text-white line-clamp-1 group-hover:text-leaf transition-colors">{product.name}</h4>
+                  {product.isPerishable && (
+                    <div className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/20 px-2.5 py-1 text-[10px] font-bold text-gold backdrop-blur-md">
+                      <Sparkles className="h-3 w-3" />
+                      Fresh
+                    </div>
+                  )}
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-end justify-between">
-                    <div className="space-y-0.5">
-                      <div className="text-xl font-black text-white">{product.price}</div>
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-white/30">{product.unit}</div>
+                {/* Content */}
+                <div className="mt-5 flex flex-1 flex-col justify-between space-y-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-leaf/80">{product.category}</span>
+                      {product.requiresColdChain && (
+                        <div className="flex items-center gap-1 text-[10px] text-blue-400">
+                          <Snowflake className="h-2.5 w-2.5" />
+                          Cold-chain
+                        </div>
+                      )}
                     </div>
-                    <div className="text-right">
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-leaf/60">Min Order</div>
-                      <div className="text-sm font-bold text-white">{product.moq}</div>
-                    </div>
+                    <h4 className="font-display text-base font-bold text-white line-clamp-1 group-hover:text-leaf transition-colors">{product.name}</h4>
                   </div>
 
-                  <Button variant="primary" className="group relative w-full overflow-hidden rounded-xl h-10 text-xs">
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      Add to Cart
-                      <ShoppingBag className="h-3.5 w-3.5" />
-                    </span>
-                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                  </Button>
+                  <div className="space-y-3">
+                    <div className="flex items-end justify-between">
+                      <div className="space-y-0.5">
+                        <div className="text-xl font-black text-white">{formatNairaFromKobo(product.priceKobo)}</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-white/30">per {product.unit}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-leaf/60">Min Order</div>
+                        <div className="text-sm font-bold text-white">{product.moq} {product.unit}</div>
+                      </div>
+                    </div>
+
+                    <Link href={`/product/${product.id}`} className="block">
+                      <Button variant="primary" className="group relative w-full overflow-hidden rounded-xl h-10 text-xs">
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          View Details
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </span>
+                        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center">
+              <p className="text-white/40">No products available at the moment.</p>
+              <Link href="/admin/seed" className="mt-4 inline-block text-leaf hover:underline">Seed some data</Link>
             </div>
-          ))}
+          )}
         </div>
       </section>
 
